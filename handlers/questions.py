@@ -1,9 +1,12 @@
 import re
-from aiogram.types import ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import types
 from create_bot import dp
 from dp import push, check_user_existence, push_only
 from q import questions
+
+
+inline_keyboard = InlineKeyboardMarkup(row_width=1).add(InlineKeyboardButton("Читать статью", url="https://telegra.ph/RABOTA-EST-EST-07-11"))
 
 
 @dp.message_handler(commands=['start'], state='*')
@@ -11,7 +14,20 @@ async def start(message: types.Message):
     if check_user_existence(message.from_user.username):
         await message.answer("Вы уже проходили тестирование, попробуйте пройти позже")
     else:
-        await message.answer("Добро пожаловать! Готовы пройти опрос?", reply_markup=types.ReplyKeyboardMarkup(
+        # Hello message
+        # await message.answer_photo(
+        #     photo=open('./img/p1.png', 'rb'),
+        #     caption="Hello", reply_markup=inline_keyboard
+        # )
+        await message.answer("👋 Добрый день, Соискатель!\n"
+            "Предлагаем тебе ознакомиться с информацией 📋 о компании и вакансией.\n"
+            "Далее пройти небольшой <i>опрос</i> и ждать связи с нашим HR-специалистом.\n"
+            "Кандидатов рассматриваем по всей <b>РФ</b> 🇷🇺\n"
+            "Рекомендуем прочитать ⬇️ <b>статью</b> ⬇️", 
+            reply_markup=inline_keyboard,
+            parse_mode=types.ParseMode.HTML
+            )
+        await message.answer("Готовы пройти опрос?", reply_markup=types.ReplyKeyboardMarkup(
             keyboard=[[types.KeyboardButton('Готов')]],
             resize_keyboard=True,
             one_time_keyboard=True
